@@ -22,6 +22,11 @@ public class SentimentController {
 
         // 3. Por ahora, devolvemos una respuesta "ficticia" (Mock) 
         // para confirmar que el Backend funciona.
-        return ResponseEntity.ok(new SentimentResponse("Positivo", 0.99));
+        //return ResponseEntity.ok(new SentimentResponse("Positivo", 0.99));
+
+        // simulamos un analisis positivo de probabalidad
+        SentimentResponse respuestaExitosa = new SentimentResponse("positivo", 0.95);
+
+        return ResponseEntity.ok(respuestaExitosa);
     }
 }
