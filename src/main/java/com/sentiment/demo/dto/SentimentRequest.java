@@ -1,11 +1,14 @@
 package com.sentiment.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record SentimentRequest(
-        @JsonProperty("prevision") Prevision prevision,  // Positivo, Negativo, Neutro
-        @JsonProperty("probabilidad") double probabilidad, // 0–1
-        @JsonProperty("error") String error // Mensaje de error si algo falla
+        @JsonProperty("text")
+        @NotBlank(message = "El texto no puede estar vacío")
+        @Size(min = 5, max = 2000, message = "El texto debe tener al entre 5 y 2000 caracteres")
+        String text
                                )
 {
     

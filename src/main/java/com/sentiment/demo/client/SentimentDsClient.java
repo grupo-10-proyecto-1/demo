@@ -19,7 +19,7 @@ public class SentimentDsClient {
     // Como no sabemos como es el DS real usaremos uno falso para que se pueda probar
 
     public SentimentResponse predict(String text){
-        return new SentimentResponse(Prevision.POSITIVO, 0.95,"");
+        return new SentimentResponse(Prevision.POSITIVO, 0.95);
     }
 
 }

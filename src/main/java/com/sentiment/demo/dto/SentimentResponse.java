@@ -5,12 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) // omite null en JSON
 public record SentimentResponse(
-        @JsonProperty("prevision") Prevision prevision,  // Positivo, Negativo, Neutro
-        @JsonProperty("probabilidad") double probabilidad, // 0–1
-        @JsonProperty("error") String error // Mensaje de error si algo falla
+        @JsonProperty("prevision") Prevision prevision,
+        @JsonProperty("probabilidad") double probabilidad
 ) {
-    // Constructor alternativo solo para error
-    public SentimentResponse(String error) {
-        this(null, 0.0, error);
-    }
+
+  
 }
