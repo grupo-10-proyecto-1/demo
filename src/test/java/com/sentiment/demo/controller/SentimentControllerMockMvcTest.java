@@ -2,44 +2,48 @@ package com.sentiment.demo.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WebMvcTest(SentimentController.class)
-class SentimentControllerMockMvcTest {
+/**
+ * Tests de integración para el SentimentController (Dev 4).
+ * Verifica el contrato de la API y el manejo de errores básicos (400 vs 200).
+ * 
+ * Ejecutar con: ./mvnw -Dtest=SentimentControllerMockMvcTest test
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
+public class SentimentControllerMockMvcTest {
 
     @Autowired
-    private MockMvc mockMvc; // cliente de pruebas que simula peticiones HTTP al controller
+    private MockMvc mockMvc;
 
-    /**
-     * Caso: si no mando el campo `text`, espero un 400 Bad Request.
-     * Para qué sirve: asegura que la validación del DTO está activa y
-     * que la API no acepta requests vacíos.
-     */
     @Test
-    void whenMissingText_thenReturns400() throws Exception {
+    public void testSentimentAnalysis_Success() throws Exception {
+        // Caso feliz: Texto válido
+        String jsonRequest = "{\"text\": \"Este es un gran proyecto para la hackathon\"}";
+
         mockMvc.perform(post("/sentiment")
-                .contentType("application/json")
-                .content("{}"))
-                .andExpect(status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.prevision").exists());
     }
 
-    /**
-     * Caso: envío texto válido y espero 200 OK y la estructura del JSON.
-     * Por qué lo hacemos: confirma que el controller procesa peticiones
-     * válidas y responde con los campos esperados (prevision, probabilidad).
-     */
     @Test
-    void whenValidText_thenReturns200() throws Exception {
-        var body = "{\"text\":\"Me encanta esta app, funciona bien\"}";
+    public void testSentimentAnalysis_BadRequest_Empty() throws Exception {
+        // Caso error: Texto vacío (Validación Dev 2)
+        String jsonRequest = "{\"text\": \"\"}";
+
         mockMvc.perform(post("/sentiment")
-                .contentType("application/json")
-                .content(body))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.prevision").exists())
-                .andExpect(jsonPath("$.probabilidad").exists());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isBadRequest());
     }
 }

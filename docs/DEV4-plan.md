@@ -11,7 +11,7 @@ Preparar los artefactos que sumen puntos en el hackathon: tests básicos, colecc
 - README modo jurado: "Quickstart (30s)", Mock mode vs Python mode, ejemplos, troubleshooting.
 - Docker (opcional): `Dockerfile` + `docker-compose.yml` placeholder para FastAPI.
 - GET /stats (opcional): contador en memoria y endpoint.
-- GET /health y /health/model: health básica y ping al modelo cuando `sentiment.mode=python`.
+- [x] GET /health y /health/model: health básica implementada (`/health`).
 
 ## Estrategia de trabajo
 - Empezamos mañana: NO tocaremos `main` directamente.
@@ -29,7 +29,8 @@ Preparar los artefactos que sumen puntos en el hackathon: tests básicos, colecc
 ## Estado Actual
 - Rama `dev-4-qa` activa.
 - Migración a JDK 17 completada.
-- Tests MockMvc pasando (`BUILD SUCCESS`) en Windows y Linux.
+- Tests MockMvc y Health pasando (`BUILD SUCCESS`) en Windows y Linux.
+- Integración con cambios de Dev 2 y Dev 3 completada.
 
 ---
 

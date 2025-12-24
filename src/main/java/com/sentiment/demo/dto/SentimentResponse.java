@@ -1,27 +1,13 @@
 package com.sentiment.demo.dto;
 
-public class SentimentResponse {
-    private Prevision prevision;
-    private double probabilidad;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public SentimentResponse(Prevision prevision, double probabilidad) {
-        this.prevision = prevision;
-        this.probabilidad = probabilidad;
-    }
+@JsonInclude(JsonInclude.Include.NON_NULL) // omite null en JSON
+public record SentimentResponse(
+        @JsonProperty("prevision") Prevision prevision,
+        @JsonProperty("probabilidad") double probabilidad
+) {
 
-    public Prevision getPrevision() {
-        return prevision;
-    }
-
-    public void setPrevision(Prevision prevision) {
-        this.prevision = prevision;
-    }
-
-    public double getProbabilidad() {
-        return probabilidad;
-    }
-
-    public void setProbabilidad(double probabilidad) {
-        this.probabilidad = probabilidad;
-    }
+  
 }

@@ -35,12 +35,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+            
         </dependency>
-
-        <!-- Dependencias de test (JUnit, Spring Test, MockMvc, etc.) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 

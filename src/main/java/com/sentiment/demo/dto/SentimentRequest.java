@@ -1,20 +1,15 @@
 package com.sentiment.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public class SentimentRequest {
-
-    @NotBlank(message = "El texto no puede estar vacío")
-    private String text;
-
-    public SentimentRequest() {
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+public record SentimentRequest(
+        @JsonProperty("text")
+        @NotBlank(message = "El texto no puede estar vacío")
+        @Size(min = 5, max = 2000, message = "El texto debe tener al entre 5 y 2000 caracteres")
+        String text
+                               )
+{
+    
 }

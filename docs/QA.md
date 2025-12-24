@@ -43,6 +43,14 @@ Probar que el endpoint `POST /sentiment` valida entrada y responde con la estruc
    ./mvnw -Dtest=SentimentControllerMockMvcTest test
    ```
 
+   O ejecutar todos los tests (incluyendo Health Check):
+   ```bash
+   # Windows
+   .\mvnw.cmd test
+   # Linux
+   ./mvnw test
+   ```
+
 4. Interpretar la salida:
 
 - Si ves `Tests run: 2, Failures: 0`: todo bien.
