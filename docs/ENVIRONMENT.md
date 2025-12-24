@@ -17,7 +17,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup-env-windows.ps1 -JavaHo
 Si quieres establecer `MAVEN_HOME` (opcional):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\setup-env-windows.ps1 -JavaHome "C:\Program Files\Java\jdk-21" -MavenHome "C:\tools\apache-maven-3.9.6"
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-env-windows.ps1 -JavaHome "C:\Program Files\Java\jdk-17" -MavenHome "C:\tools\apache-maven-3.9.6"
 ```
 
 ### Notas
