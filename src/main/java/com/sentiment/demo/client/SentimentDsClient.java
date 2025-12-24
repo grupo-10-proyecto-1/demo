@@ -76,7 +76,7 @@ public class SentimentDsClient {
 
         Prevision prevision;
         try {
-            prevision = Prevision.valueOf(previsionRaw.toString());
+            prevision = Prevision.valueOf(previsionRaw.toString().trim().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new ModelUnavailableException("Valor inválido de prevision desde DS: " + previsionRaw, e);
         }
