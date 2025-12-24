@@ -19,9 +19,9 @@ public class SentimentService {
     }
 
     /**
-     *  determina si el sistema esta en modo mock o debe llamar al servicio DS. regresa un DTO segun corresponda.
-     * @param text
-     * @return SentimentResponse
+     * Orquesta el modo de ejecución:
+     * - mock: devuelve una respuesta fija para pruebas/demos
+     * - python: delega la predicción al cliente de DS (FastAPI)
      */
     public SentimentResponse predict(String text) {
         if ("mock".equalsIgnoreCase(mode)) {

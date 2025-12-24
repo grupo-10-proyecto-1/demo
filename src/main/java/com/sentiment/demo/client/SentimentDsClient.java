@@ -35,10 +35,9 @@ public class SentimentDsClient {
     }
 
     /**
-     * Llama al servicio de DS y valida la respuesta si todo esta correcto regresa un SentimentResponse
-     *      este modulo tiene un reintento de conexion y utiliza el GlobalExceptionHandler definido para responder.
-     * @param text
-     * @return SentimentResponse
+     * Cliente HTTP hacia el servicio de Data Science (FastAPI).
+     * Envía { "text": ... } a /predict y espera { "prevision": "...", "probabilidad": ... }.
+     * Incluye 1 reintento ante timeout/conexión. Si falla, lanza ModelUnavailableException (manejada por el handler global).
      */
     public SentimentResponse predict(String text) {
         // retry mínimo: 1 reintento extra solo si hay timeout/conexión
@@ -92,6 +91,10 @@ public class SentimentDsClient {
         return new SentimentResponse(prevision, probabilidad);
     }
 
+    /**
+     * Verifica disponibilidad del servicio DS llamando al endpoint de health configurado.
+     * Si falla la conexión o el servicio no responde, RestTemplate lanza excepción.
+     */
     public void healthCheck(){
         String healthUrl = url(healthPath);
         restTemplate.getForObject(healthUrl,String.class);
