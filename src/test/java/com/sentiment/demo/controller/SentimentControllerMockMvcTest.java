@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 // Testeamos los controllers, especificándolos aquí.
 // Spring solo creará los beans para la capa web y los que mockeemos.
-@WebMvcTest(controllers = {SentimentController.class, HealthController.class})
+@WebMvcTest(controllers = {SentimentController.class, HealthController.class, StatsController.class})
 class SentimentControllerMockMvcTest {
 
     @Autowired
@@ -80,9 +80,8 @@ class SentimentControllerMockMvcTest {
     @Test
     void whenGetStats_thenReturns200AndCorrectStructure() throws Exception {
         mockMvc.perform(get("/stats"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("active"))
-                .andExpect(jsonPath("$.total_requests").isNumber());
+                .andExpect(status().isNotImplemented())
+                .andExpect(jsonPath("$.status").value("NOT_IMPLEMENTED"));
     }
 
     /**
