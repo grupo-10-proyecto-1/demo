@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface SentimentStatRepository extends JpaRepository<SentimentStat, Long> {
-    List<SentimentStat> findAllByOrderByCreatedAtDesc(Pageable Pageable);
+    List<SentimentStat> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

@@ -3,7 +3,6 @@ package com.sentiment.demo.service;
 import com.sentiment.demo.dto.HistoryResponseDTO;
 import com.sentiment.demo.repository.SentimentStatRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

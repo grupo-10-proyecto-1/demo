@@ -3,7 +3,9 @@ package com.sentiment.demo.controller;
 import com.sentiment.demo.client.SentimentDsClient;
 import com.sentiment.demo.dto.Prevision;
 import com.sentiment.demo.dto.SentimentResponse;
+import com.sentiment.demo.dto.StatResponseDTO;
 import com.sentiment.demo.service.SentimentService;
+import com.sentiment.demo.service.StatsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,6 +39,10 @@ class SentimentControllerMockMvcTest {
 
     @MockBean
     private SentimentDsClient sentimentDsClient; // HealthController depende de este
+
+    @MockBean
+    private StatsService statsService;
+
 
     @Test
     void whenMissingText_thenReturns400() throws Exception {
@@ -78,11 +85,17 @@ class SentimentControllerMockMvcTest {
      * Verifica que el endpoint responda y tenga la estructura esperada.
      */
     @Test
-    void whenGetStats_thenReturns200AndCorrectStructure() throws Exception {
-        mockMvc.perform(get("/stats"))
-                .andExpect(status().isNotImplemented())
-                .andExpect(jsonPath("$.status").value("NOT_IMPLEMENTED"));
-    }
+        void whenGetStats_thenReturns200() throws Exception {
+            when(statsService.getStats(anyInt()))
+                    .thenReturn(new StatResponseDTO(
+                            100,   // int
+                            0L, 0L, 0L, 0L,  // 4 long
+                            0.0, 0.0, 0.0    // 3 double
+                    ));
+
+            mockMvc.perform(get("/stats"))
+                    .andExpect(status().isOk());
+        }
 
     /**
      * Caso: Health Check General (Liveness).

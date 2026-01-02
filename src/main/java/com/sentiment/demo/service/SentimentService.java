@@ -3,7 +3,6 @@ package com.sentiment.demo.service;
 import com.sentiment.demo.client.SentimentDsClient;
 import com.sentiment.demo.dto.Prevision;
 import com.sentiment.demo.dto.SentimentResponse;
-import com.sentiment.demo.entity.SentimentStat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
