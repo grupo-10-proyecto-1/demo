@@ -35,7 +35,7 @@ El comportamiento se controla vía `application.properties` o variables de entor
 |----------|-------|-------------|
 | `SENTIMENT_MODE` | `mock` | (Por defecto) Devuelve respuestas simuladas aleatorias. Ideal para demos UI. |
 | `SENTIMENT_MODE` | `python` | Intenta conectar con el servicio de IA real. |
-| `PYTHON_API_URL` | URL | URL del servicio FastAPI (ej. `http://localhost:8000`). |
+| `PYTHON_API_BASE_URL` | URL | URL base del servicio FastAPI (ej. `http://localhost:8000`). |
 
 ---
 
@@ -73,4 +73,4 @@ El comportamiento se controla vía `application.properties` o variables de entor
 
 ---
 
-*Proyecto creado para Hackathon Demo.*
+*Proyecto creado para Hackathon NoCountry.*

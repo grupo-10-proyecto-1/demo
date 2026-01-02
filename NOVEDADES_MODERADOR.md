@@ -1,6 +1,6 @@
-# 🛠️ Registro de Refactorización - Semana 2
+# 📢 Novedades e Instrucciones para el Moderador
 
-## 📦 Estandarización de Paquetes
+## 📦 Estandarización de Paquetes (Semana 2)
 
 **Cambio:** Renombrado del paquete base de `com.sentiment.demo` a `com.sentiment.backend`.
 
@@ -17,4 +17,18 @@ El proyecto evolucionó de ser una prueba de concepto ("demo") a ser el backend 
 - **QA:** Los tests de integración (`SentimentControllerTest`) se han migrado para validar este cambio.
 
 ---
-*Autor: Dev 4 - QA*
+
+## 🔍 Observación de Calidad (Deuda Técnica)
+
+**Hallazgo:** Error de tipeo en el nombre de la clase principal.
+`Found @SpringBootConfiguration com.sentiment.backend.SentimentProyectApplication`
+
+**Detalle:**
+El nombre de la clase principal tiene un error de tipeo ("Proyect" en lugar de "Project" o "Backend").
+
+**Estado Actual:** Funciona, no rompe nada.
+
+**Recomendación:** Dado que estamos "limpiando" la casa para el jurado, sería ideal renombrarlo a `SentimentBackendApplication` para que coincida con el `artifactId` del `pom.xml`, pero **no es bloqueante**.
+
+---
+*Saludos Dev 4 - QA / Omar Toledo*
