@@ -1,16 +1,18 @@
-# Etapa 1: Build
-FROM maven:3.8.5-openjdk-17 AS build
+# Etapa de construcción
+FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
-COPY pom.xml .
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+# Descargar dependencias (cache layer)
+RUN ./mvnw dependency:go-offline
 COPY src ./src
-# Empaquetar saltando tests para agilizar el build en demo
-RUN mvn clean package -DskipTests
+# Empaquetar sin correr tests para agilizar
+RUN ./mvnw package -DskipTests
 
-# Etapa 2: Runtime
-FROM eclipse-temurin:17-jdk-alpine
+# Etapa de ejecución
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponer puerto y ejecutar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

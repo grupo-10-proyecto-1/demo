@@ -6,7 +6,7 @@ Ejemplo: powershell -ExecutionPolicy Bypass -File .\scripts\setup-env-windows.ps
 Opcional: pasar -MavenHome "C:\path\to\apache-maven-3.x" si deseas definir MAVEN_HOME.
 #>
 param(
-    [string]$JavaHome = "C:\Program Files\Java\jdk-21",
+    [string]$JavaHome = "C:\Program Files\Java\jdk-17",
     [string]$MavenHome = ""
 )
 
