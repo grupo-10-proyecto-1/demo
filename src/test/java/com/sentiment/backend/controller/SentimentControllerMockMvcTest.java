@@ -11,11 +11,14 @@ import com.sentiment.backend.client.SentimentDsClient;
 import com.sentiment.backend.controller.HealthController;
 import com.sentiment.backend.controller.SentimentController;
 import com.sentiment.backend.controller.StatsController;
+import com.sentiment.backend.controller.HistoryController;
 import com.sentiment.backend.dto.Prevision;
 import com.sentiment.backend.dto.SentimentResponse;
 import com.sentiment.backend.dto.StatResponseDTO;
+import com.sentiment.backend.dto.HistoryResponseDTO;
 import com.sentiment.backend.service.SentimentService;
 import com.sentiment.backend.service.StatsService;
+import com.sentiment.backend.service.HistoryService;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,9 +27,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
+import java.time.LocalDateTime;
+
 // Testeamos los controllers, especificándolos aquí.
 // Spring solo creará los beans para la capa web y los que mockeemos.
-@WebMvcTest(controllers = {SentimentController.class, HealthController.class, StatsController.class})
+@WebMvcTest(controllers = {SentimentController.class, HealthController.class, StatsController.class, HistoryController.class})
 class SentimentControllerMockMvcTest {
 
     @Autowired
@@ -46,6 +52,9 @@ class SentimentControllerMockMvcTest {
 
     @MockBean
     private StatsService statsService;
+
+    @MockBean
+    private HistoryService historyService;
 
 
     @Test
@@ -120,6 +129,20 @@ class SentimentControllerMockMvcTest {
     @Test
     void whenGetModelHealth_thenReturns200() throws Exception {
         mockMvc.perform(get("/health/model"))
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * Caso: Historial de consultas.
+     * Verifica que el endpoint /history responda correctamente.
+     */
+    @Test
+    void whenGetHistory_thenReturns200() throws Exception {
+        when(historyService.getStatHistory(anyInt())).thenReturn(List.of(
+                new HistoryResponseDTO("Test", Prevision.POSITIVO, 0.9, LocalDateTime.now())
+        ));
+
+        mockMvc.perform(get("/history"))
                 .andExpect(status().isOk());
     }
 }
