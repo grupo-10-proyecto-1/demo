@@ -80,7 +80,7 @@ class SentimentControllerMockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.prevision").value("Positivo"))
+                .andExpect(jsonPath("$.prevision").value("POSITIVO"))
                 .andExpect(jsonPath("$.probabilidad").value(0.99));
     }
 
