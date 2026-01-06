@@ -84,6 +84,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Health Check Model",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/health/model"
+			},
+			"response": []
+		},
+		{
+			"name": "Stats (Demo)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/stats"
+			},
+			"response": []
+		},
+		{
+			"name": "History (Demo)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/history?limit=5"
+			},
+			"response": []
 		}
 	],
 	"variable": [

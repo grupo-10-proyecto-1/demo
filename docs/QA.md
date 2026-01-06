@@ -13,11 +13,11 @@ Probar que el endpoint `POST /sentiment` valida entrada y responde con la estruc
 ## Cómo ejecutar los tests localmente
 
 1. Abrir terminal en la raíz del proyecto.
-2. (Opcional) Asegurarse que la sesión use JDK21:
+2. (Opcional) Asegurarse que la sesión use JDK 17 (Estándar del proyecto):
 
    PowerShell:
    ```powershell
-   $env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
+   $env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
    $env:Path = "$env:JAVA_HOME\bin;" + $env:Path
    java -version
    .\mvnw.cmd -v
@@ -25,7 +25,7 @@ Probar que el endpoint `POST /sentiment` valida entrada y responde con la estruc
 
    Bash:
    ```bash
-   export JAVA_HOME=/usr/lib/jvm/jdk-21
+   export JAVA_HOME=/usr/lib/jvm/jdk-17
    export PATH="$JAVA_HOME/bin:$PATH"
    java -version
    ./mvnw -v
@@ -43,10 +43,18 @@ Probar que el endpoint `POST /sentiment` valida entrada y responde con la estruc
    ./mvnw -Dtest=SentimentControllerMockMvcTest test
    ```
 
+   O ejecutar todos los tests (incluyendo Health Check):
+   ```bash
+   # Windows
+   .\mvnw.cmd test
+   # Linux
+   ./mvnw test
+   ```
+
 4. Interpretar la salida:
 
 - Si ves `Tests run: 2, Failures: 0`: todo bien.
-- Si falla por "class file version ...": ver sección Troubleshooting en README (apuntar a JDK21).
+- Si falla por "class file version ...": ver sección Troubleshooting en README (apuntar a JDK 17).
 - Si falla por jsonPath: revisá el body que devuelve el controller (MockMvc lo imprime en los logs) y ajustá la aserción.
 
 ## Añadir un nuevo test (paso a paso)
@@ -101,5 +109,3 @@ mockMvc.perform(post("/sentiment").contentType("application/json").content("{...
 - Mantener los nombres de campo del API consistentes (español o inglés). Si cambian, actualizá tests.
 - Tests rápidos (MockMvc) para validar controller-level.
 - Tests de integración (`@SpringBootTest`) para validar wiring y config.
-
-
