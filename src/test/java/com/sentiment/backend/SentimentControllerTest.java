@@ -22,7 +22,7 @@ class SentimentControllerTest {
     // --- Tests de Main (Health Check) ---
     @Test
     void healthCheck_shouldReturnOk() throws Exception {
-        mockMvc.perform(get("/actuator/health"))
+        mockMvc.perform(get("/health"))
                 .andExpect(status().isOk());
     }
 
@@ -58,5 +58,26 @@ class SentimentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testModelHealth() throws Exception {
+        mockMvc.perform(get("/health/model"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"));
+    }
+
+    @Test
+    void testStats() throws Exception {
+        mockMvc.perform(get("/stats"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").exists());
+    }
+
+    @Test
+    void testHistory() throws Exception {
+        mockMvc.perform(get("/history"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 }

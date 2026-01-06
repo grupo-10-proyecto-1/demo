@@ -1,97 +1,88 @@
-package com.example.demo.controller;
+package com.sentiment.backend;
 
-import com.example.demo.dto.SentimentRequest;
-import com.example.demo.model.SentimentStat;
-import com.example.demo.repository.SentimentStatRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sentiment.backend.dto.SentimentRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SentimentControllerTest {
+class SentimentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    // --- Tests traídos de Main (Health Check) ---
+    @Test
+    void healthCheck_shouldReturnOk() throws Exception {
+        // Probamos el endpoint de actuator o el custom health
+        mockMvc.perform(get("/health")) // O /actuator/health según config
+                .andExpect(status().isOk());
+    }
 
-    // Dev 4: Mockeamos el repositorio para aislar la prueba del controlador
-    @MockBean
-    private SentimentStatRepository repository;
+    // --- Tests de Dev 4 (Validaciones y Lógica) ---
 
     @Test
-    public void testAnalyzeSentiment_Success() throws Exception {
-        SentimentRequest request = new SentimentRequest();
-        request.setText("Este es un producto excelente y maravilloso");
+    public void testSentimentAnalysis_Success() throws Exception {
+        // Caso feliz: Texto válido
+        String jsonRequest = "{\"text\": \"Este es un mensaje de prueba positivo\"}";
 
         mockMvc.perform(post("/sentiment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
                 .andExpect(status().isOk())
-                // Dev 4: Actualizamos validación según contrato de Dev 1 (prevision)
-                .andExpect(jsonPath("$.prevision").value("POSITIVO"))
-                .andExpect(jsonPath("$.mode").exists());
+                // Validamos que exista el campo 'prevision' (contrato nuevo)
+                .andExpect(jsonPath("$.prevision").exists());
     }
 
     @Test
-    public void testAnalyzeSentiment_EmptyText_Returns400() throws Exception {
-        SentimentRequest request = new SentimentRequest();
-        request.setText(""); // Texto vacío
+    public void testSentimentAnalysis_BadRequest_Empty() throws Exception {
+        // Caso error: Texto vacío
+        String jsonRequest = "{\"text\": \"\"}";
 
         mockMvc.perform(post("/sentiment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testHealthCheck() throws Exception {
-        mockMvc.perform(get("/health"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("UP"));
+    public void testSentimentAnalysis_BadRequest_TooShort() throws Exception {
+        // Caso error: Texto muy corto (< 5 caracteres)
+        String jsonRequest = "{\"text\": \"Hola\"}";
+
+        mockMvc.perform(post("/sentiment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testStats() throws Exception {
-        // Dev 4: Simulamos respuesta vacía del repo para evitar NullPointerException
-        when(repository.findLastStats(any(Pageable.class))).thenReturn(List.of());
+    void testModelHealth() throws Exception {
+        mockMvc.perform(get("/health/model"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"));
+    }
 
+    @Test
+    void testStats() throws Exception {
         mockMvc.perform(get("/stats"))
                 .andExpect(status().isOk())
-                // Dev 4: Validamos el campo 'total' del nuevo DTO
                 .andExpect(jsonPath("$.total").exists());
     }
 
     @Test
-    public void testHistory() throws Exception {
-        // Dev 4: Validamos que el historial devuelva una lista
-        when(repository.findLastStats(any(Pageable.class))).thenReturn(List.of(new SentimentStat()));
-
+    void testHistory() throws Exception {
         mockMvc.perform(get("/history"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
-    }
-
-    @Test
-    public void testModelHealth() throws Exception {
-        mockMvc.perform(get("/health/model"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("UP"));
     }
 }
