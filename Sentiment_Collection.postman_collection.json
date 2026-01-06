@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "b5a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c",
-		"name": "Sentiment Analysis Demo",
+		"name": "Sentiment Analysis Backend",
 		"description": "Colección para probar el API de Sentimientos (Dev 4)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},

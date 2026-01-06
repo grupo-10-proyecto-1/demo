@@ -12,14 +12,17 @@ services:
       - SENTIMENT_MODE=mock
       # Cuando integremos Python, cambiamos a:
       # - SENTIMENT_MODE=python
-      # - PYTHON_API_URL=http://sentiment-model:8000/predict
+      # - PYTHON_API_BASE_URL=http://sentiment-model:8000
     networks:
       - sentiment-net
 
   # Placeholder para el futuro servicio de IA (FastAPI)
   # sentiment-model:
-  #   image: python:3.9-slim
+  #   build: ../sentiment-model  # Asumiendo que el repo de python estará al lado
+  #   image: sentiment-model:latest
   #   container_name: sentiment-model
+  #   ports:
+  #     - "8000:8000"
   #   networks:
   #     - sentiment-net
 

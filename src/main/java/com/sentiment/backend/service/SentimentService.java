@@ -32,6 +32,7 @@ public class SentimentService {
             return new SentimentResponse(Prevision.POSITIVO, 0.95);
         }
         SentimentResponse  respuesta = dsClient.predict(text);
+        // Persistencia agregada por Dev 1
         sentimentStatService.guardar(text,respuesta.prevision(), respuesta.probabilidad());
         return respuesta;
     }

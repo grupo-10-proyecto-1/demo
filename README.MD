@@ -71,6 +71,9 @@ El comportamiento se controla vía `application.properties` o variables de entor
 | **Error Validación** | `{"text": ""}` | **400 Bad Request** |
 | **Modelo Caído** | (Simular apagando Python) | **503 Service Unavailable** |
 
+---
+
+*Proyecto creado para Hackathon NoCountry.*
 ## corregido
 ---
 
