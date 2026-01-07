@@ -71,4 +71,11 @@ public class GlobalExceptionHandler {
                         "INTERNAL_ERROR"
                 ));
     }
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidInput(InvalidInputException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), "VALIDATION_ERROR"));
+    }
 }
