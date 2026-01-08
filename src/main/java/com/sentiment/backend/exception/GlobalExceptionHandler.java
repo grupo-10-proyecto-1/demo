@@ -80,6 +80,14 @@ public class GlobalExceptionHandler {
         return m.find() ? m.group(1) : null;
     }
 
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidInput(InvalidInputException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), "VALIDATION_ERROR"));
+    }
+
     // ==============================
     // 500: Error genérico no controlado
     // ==============================
@@ -91,12 +99,5 @@ public class GlobalExceptionHandler {
                         "Error interno del servidor",
                         "INTERNAL_ERROR"
                 ));
-    }
-
-    @ExceptionHandler(InvalidInputException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidInput(InvalidInputException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(ex.getMessage(), "VALIDATION_ERROR"));
     }
 }
