@@ -28,12 +28,16 @@ public class SentimentService {
      * - persiste la consulta solo si es del modelo para no ensuciar la DB.
      */
     public SentimentResponse predict(String text) {
+
+        // Limpiando la cadena para URL, simbolos o textos repetitivos
+        String textLimpio = LimpiadorText.limpiarOrThrow(text);
+
         if ("mock".equalsIgnoreCase(mode)) {
             return new SentimentResponse(Prevision.POSITIVO, 0.95);
         }
-        SentimentResponse  respuesta = dsClient.predict(text);
+        SentimentResponse  respuesta = dsClient.predict(textLimpio);
         // Persistencia agregada por Dev 1
-        sentimentStatService.guardar(text,respuesta.prevision(), respuesta.probabilidad());
+        sentimentStatService.guardar(textLimpio,respuesta.prevision(), respuesta.probabilidad());
         return respuesta;
     }
 
