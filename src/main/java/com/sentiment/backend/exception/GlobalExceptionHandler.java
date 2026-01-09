@@ -51,12 +51,41 @@ public class GlobalExceptionHandler {
     // ==============================
     @ExceptionHandler(HttpStatusCodeException.class)
     public ResponseEntity<ErrorResponse> handleDsHttpError(HttpStatusCodeException ex) {
+        /*
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
                 .body(new ErrorResponse(
                         "Error del servicio de predicción (DS)",
                         "DS_SERVICE_ERROR"
                 ));
+         */
+
+        // Si FastAPI responde con 4XX no es falla puede ser idioma no soportado
+        if (ex.getStatusCode().is4xxClientError()) {
+            String msg = extraerDetalle(ex.getResponseBodyAsString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(msg != null ? msg : "Input inválido para el modelo","VALIDATION_ERROR"));
+        }
+        // Si FastAPI respondió 5xx es algun fallo (proxy → 502)
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(new ErrorResponse("Error del servicio de predicción (DS)","DS_SERVICE_ERROR"));
+    }
+
+    // Extrae el detalle de la respuesta del FastAPI
+    private String extraerDetalle(String body) {
+        if (body == null) return null;
+        var m = java.util.regex.Pattern
+                .compile("\"detail\"\\s*:\\s*\"(.*?)\"")
+                .matcher(body);
+        return m.find() ? m.group(1) : null;
+    }
+
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidInput(InvalidInputException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), "VALIDATION_ERROR"));
     }
 
     // ==============================
