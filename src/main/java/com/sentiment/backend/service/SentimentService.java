@@ -7,6 +7,13 @@ import com.sentiment.backend.client.SentimentDsClient;
 import com.sentiment.backend.dto.Prevision;
 import com.sentiment.backend.dto.SentimentResponse;
 
+/**
+ * Servicio principal de negocio para el análisis de sentimientos.
+ * Actúa como orquestador entre el controlador REST y el cliente del modelo de
+ * Data Science.
+ * Maneja la lógica de "modo mock" vs "modo python" y la persistencia de
+ * estadísticas.
+ */
 @Service
 public class SentimentService {
 
@@ -35,9 +42,9 @@ public class SentimentService {
         if ("mock".equalsIgnoreCase(mode)) {
             return new SentimentResponse(Prevision.POSITIVO, 0.95);
         }
-        SentimentResponse  respuesta = dsClient.predict(textLimpio);
+        SentimentResponse respuesta = dsClient.predict(textLimpio);
         // Persistencia agregada por Dev 1
-        sentimentStatService.guardar(textLimpio,respuesta.prevision(), respuesta.probabilidad());
+        sentimentStatService.guardar(textLimpio, respuesta.prevision(), respuesta.probabilidad());
         return respuesta;
     }
 
